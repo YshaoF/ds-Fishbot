@@ -11,3 +11,7 @@ build/
 ios/Fishbot/public/
 *.xcuserstate
 xcuserdata/
+
+.openai/
+dist/vendor/pdf.min.mjs
+dist/vendor/pdf.worker.min.mjs
