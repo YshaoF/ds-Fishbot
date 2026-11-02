@@ -49,5 +49,5 @@
  $('#file-picker').onchange=async e=>{const selected=[...e.target.files];e.target.value='';await addFiles(selected);};document.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('Files'))e.preventDefault();});document.addEventListener('drop',e=>{if([...e.dataTransfer.types].includes('Files')){e.preventDefault();if(page==='chat')addFiles([...e.dataTransfer.files]);}});
  function viewport(){const v=window.visualViewport;document.documentElement.style.setProperty('--app-height',Math.round(v?.height||innerHeight)+'px');document.body.classList.toggle('keyboard-open',!!v&&innerHeight-v.height>120);}
  window.visualViewport?.addEventListener('resize',viewport);window.addEventListener('resize',viewport);viewport();
- (async()=>{try{state=C.hydrate(await B.load());state.config.keySet=!!await B.getSecret('global');engine=new FishbotEngine(state,{save,change:()=>render()});render();}catch(e){$('#boot-status').textContent=e.message+'。请保留现有数据，检查存储后重新打开。';}})();
+ (async()=>{try{state=C.hydrate(await B.load());engine=new FishbotEngine(state,{save,change:()=>render()});render();}catch(e){$('#boot-status').textContent=e.message+'。请保留现有数据，检查存储后重新打开。';}})();
 })();

@@ -119,6 +119,34 @@ final class NativeBridge: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
         tasks[id] = task; task.resume()
     }
     func cancelAll() { tasks.values.forEach { $0.cancel() }; tasks.removeAll(); session.invalidateAndCancel() }
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        #if targetEnvironment(simulator)
+        guard ProcessInfo.processInfo.arguments.contains("--fishbot-selftest") else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self, weak webView] in
+            guard let self, let webView else { return }
+            var report: [String: Any] = ["keychain": false, "uiReady": false, "storage": false]
+            do {
+                try SecretStore.set("qa-selftest", "synthetic-ci-key")
+                report["keychain"] = try SecretStore.get("qa-selftest") == "synthetic-ci-key"
+                try SecretStore.set("qa-selftest", "")
+                let file = self.stateURL.deletingLastPathComponent().appendingPathComponent("qa-storage.txt")
+                try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try Data("synthetic-storage".utf8).write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+                report["storage"] = try String(contentsOf: file, encoding: .utf8) == "synthetic-storage"
+                try FileManager.default.removeItem(at: file)
+            } catch { report["nativeError"] = String(describing: error) }
+            webView.evaluateJavaScript("JSON.stringify({ready:!!document.querySelector('#welcome-card')||!!document.querySelector('#composer'),native:!!window.FishbotBridge?.native,bootError:document.querySelector('#boot-status')?.textContent||''})") { value, error in
+                if let text = value as? String, let data = text.data(using: .utf8), let ui = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    report["uiReady"] = (ui["ready"] as? Bool) == true && (ui["native"] as? Bool) == true
+                    report["ui"] = ui
+                } else { report["uiError"] = error?.localizedDescription ?? "No UI result" }
+                if let data = try? JSONSerialization.data(withJSONObject: report, options: .prettyPrinted) {
+                    try? data.write(to: self.stateURL.deletingLastPathComponent().appendingPathComponent("selftest.json"), options: .atomic)
+                }
+            }
+        }
+        #endif
+    }
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.request.url?.scheme == "fishbot", navigationAction.request.url?.host == "localhost" else { decisionHandler(.cancel); return }
         decisionHandler(.allow)
