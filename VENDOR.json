@@ -1,0 +1,15 @@
+{
+  "version": "6.5.438",
+  "tarball": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.5.438.tgz",
+  "integrity": "sha512-vg8Pw1x+AFKy4AMDvhuWl5cOYV8d698UoEANoFFhc79hqXDnZQqnOXoxw3HG907WHOg1JYOvLhP756boddFxpA==",
+  "members": {
+    "package/legacy/build/pdf.min.mjs": "dist/vendor/pdf.min.mjs",
+    "package/legacy/build/pdf.worker.min.mjs": "dist/vendor/pdf.worker.min.mjs",
+    "package/LICENSE": "dist/vendor/pdfjs-LICENSE.txt"
+  },
+  "files": {
+    "dist/vendor/pdf.min.mjs": "522ad2c83bc8a0010e7f0cc60d0892b77c8d2bf2c9702dc12288311d94270f42",
+    "dist/vendor/pdf.worker.min.mjs": "b4c8353ded0d88d2e2009574a29eb4e0c3ff7e942ecdf51ef5f71566a9667f31",
+    "dist/vendor/pdfjs-LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+  }
+}
