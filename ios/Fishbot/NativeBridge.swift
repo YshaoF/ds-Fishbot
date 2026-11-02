@@ -72,6 +72,25 @@ final class NativeBridge: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
         case "appearance":
             model.theme = (body["theme"] as? String) == "dark" ? .dark : .light
             finish(replyHandler, ["ok": true])
+        case "companionStatus", "companionStart", "companionStop":
+            Task { @MainActor in
+                do {
+                    await CompanionSession.shared.removeExpired()
+                    if action == "companionStart" {
+                        guard let minutes = body["minutes"] as? Int, let name = body["name"] as? String else {
+                            self.fail(replyHandler, "陪伴设置无效。"); return
+                        }
+                        self.finish(replyHandler, try await CompanionSession.shared.start(name: name, minutes: minutes))
+                    } else if action == "companionStop" {
+                        await CompanionSession.shared.stop()
+                        self.finish(replyHandler, ["active": false])
+                    } else { self.finish(replyHandler, CompanionSession.shared.status()) }
+                } catch let error as LocalError { self.fail(replyHandler, error.message) }
+                catch { self.fail(replyHandler, "暂时无法开启实时活动，请稍后重试。App 内陪伴仍可使用。") }
+            }
+        case "haptic":
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            finish(replyHandler, ["ok": true])
         case "request": request(body, replyHandler)
         case "cancel":
             if let id = body["id"] as? String { tasks[id]?.cancel(); tasks.removeValue(forKey: id) }
@@ -120,8 +139,13 @@ final class NativeBridge: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
     }
     func cancelAll() { tasks.values.forEach { $0.cancel() }; tasks.removeAll(); session.invalidateAndCancel() }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if model.companionLaunch > 0 { openCompanion() }
         #if targetEnvironment(simulator)
         guard ProcessInfo.processInfo.arguments.contains("--fishbot-selftest") else { return }
+        let companionTest = ProcessInfo.processInfo.arguments.contains("--fishbot-companion-selftest")
+        if companionTest {
+            webView.evaluateJavaScript("document.querySelector('#welcome-card')?.click();document.querySelector('#name-form')?.requestSubmit();setTimeout(()=>document.querySelector('.bottom [data-page=companion]')?.click(),800)", completionHandler: nil)
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self, weak webView] in
             guard let self, let webView else { return }
             var report: [String: Any] = ["keychain": false, "uiReady": false, "storage": false]
@@ -135,17 +159,34 @@ final class NativeBridge: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
                 report["storage"] = try String(contentsOf: file, encoding: .utf8) == "synthetic-storage"
                 try FileManager.default.removeItem(at: file)
             } catch { report["nativeError"] = String(describing: error) }
-            webView.evaluateJavaScript("JSON.stringify({ready:!!document.querySelector('#welcome-card')||!!document.querySelector('#composer'),native:!!window.FishbotBridge?.native,bootError:document.querySelector('#boot-status')?.textContent||''})") { value, error in
+            webView.evaluateJavaScript("JSON.stringify({ready:!!document.querySelector('#welcome-card')||!!document.querySelector('#composer')||!!document.querySelector('#pet'),companion:!!document.querySelector('#pet'),native:!!window.FishbotBridge?.native,bootError:document.querySelector('#boot-status')?.textContent||''})") { value, error in
                 if let text = value as? String, let data = text.data(using: .utf8), let ui = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     report["uiReady"] = (ui["ready"] as? Bool) == true && (ui["native"] as? Bool) == true
                     report["ui"] = ui
                 } else { report["uiError"] = error?.localizedDescription ?? "No UI result" }
-                if let data = try? JSONSerialization.data(withJSONObject: report, options: .prettyPrinted) {
-                    try? data.write(to: self.stateURL.deletingLastPathComponent().appendingPathComponent("selftest.json"), options: .atomic)
+                Task { @MainActor in
+                    if companionTest {
+                        report["widgetEmbedded"] = Bundle.main.builtInPlugInsURL.map {
+                            FileManager.default.fileExists(atPath: $0.appendingPathComponent("FishbotCompanion.appex").path)
+                        } ?? false
+                        do {
+                            let started = try await CompanionSession.shared.start(name: "Fishbot CI", minutes: 5)
+                            report["liveActivityStarted"] = started["active"] as? Bool ?? false
+                            await CompanionSession.shared.stop()
+                            report["liveActivityStopped"] = (CompanionSession.shared.status()["active"] as? Bool) == false
+                        } catch { report["companionError"] = error.localizedDescription }
+                    }
+                    if let data = try? JSONSerialization.data(withJSONObject: report, options: .prettyPrinted) {
+                        try? data.write(to: self.stateURL.deletingLastPathComponent().appendingPathComponent("selftest.json"), options: .atomic)
+                    }
                 }
             }
         }
         #endif
+    }
+    var lastCompanionLaunch = 0
+    func openCompanion() {
+        webView?.evaluateJavaScript("window.FishbotRequestedPage='companion';window.dispatchEvent(new Event('fishbot-open-companion'))", completionHandler: nil)
     }
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.request.url?.scheme == "fishbot", navigationAction.request.url?.host == "localhost" else { decisionHandler(.cancel); return }

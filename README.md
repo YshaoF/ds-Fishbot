@@ -37,3 +37,13 @@ GitHub 公开仓库的标准 runner 可免费使用；私有仓库受账户免�
 开源依赖和许可见 `THIRD_PARTY_NOTICES.md`、`DEPENDENCIES.json` 与 `VENDOR.json`。验证状态见 `VALIDATION.md`。
 
 官方说明：[Apple 免费个人开发账号](https://developer.apple.com/help/account/basics/about-your-developer-account/)、[Sideloadly FAQ](https://sideloadly.io/faq)、[GitHub Actions 计费](https://docs.github.com/en/actions/concepts/billing-and-usage)。
+
+## 小鲸陪伴（0.2.0）
+
+- App 底部「陪伴」：自由游动、轻触文字反馈与 iPhone 轻触觉、拖动、大小调节、待机。拖动期间不弹互动提示；减少动画会停止自动游动。离开页面或 App 进入后台时停止动画刷新。
+- 主屏幕小组件：长按主屏幕 → 编辑 → 添加小组件 → Fishbot → 小鲸陪伴。支持小号和中号，按时间显示预设问候，点击返回 App 陪伴页。没有读取聊天、记忆或 API Key，不需要 App Groups 共享容器。
+- 锁屏／灵动岛：在陪伴页主动开始5／25／50分钟的专注活动。原生 ActivityKit 展示名称和倒计时，支持结束活动；灵动岛取决于设备支持。到时活动标为已结束，回到 App 会清理过期活动，系统也可提前结束或移除活动。
+- 不提供跨 App 自由悬浮、后台屏幕观察或常驻无限动画。退出后台后不持续调用模型；无需通知／相册等额外权限。实时活动被关闭时会明确提示，App 内小鲸仍可使用。
+- 新安装包包含 `FishbotCompanion.appex` 扩展。个人签名时保留 App Extensions；若选择移除扩展，App 内陪伴仍可用，但小组件和实时活动不可用。覆盖更新前导出聊天备份；使用同一 Apple 账号和相同应用标识。
+
+依据：[Apple WidgetKit](https://developer.apple.com/documentation/WidgetKit/)、[ActivityKit](https://developer.apple.com/documentation/activitykit/displaying-live-data-with-live-activities)。小组件不是持续运行的桌面动画，实时活动有系统时长与更新限制。

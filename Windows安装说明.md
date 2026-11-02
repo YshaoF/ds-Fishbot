@@ -40,3 +40,8 @@ IPA 当前未签名，不能直接在 iPhone 点开安装。请继续下面的�
 - https://faq.altstore.io/altstore-classic/how-to-install-altstore-windows
 - https://developer.apple.com/help/account/basics/about-your-developer-account/
 - https://docs.github.com/en/actions/concepts/billing-and-usage
+
+
+### 0.2.0 小鲸陪伴更新
+
+安装时保留 App Extensions（不要选择 Remove App Extensions），否则主屏幕小组件与锁屏／灵动岛陪伴会被移除。安装后打开一次 Fishbot，可在主屏幕的小组件列表搜索 Fishbot。App 内底部「陪伴」可轻触、拖动、调整大小，或开始限时专注活动。签名有效期和账号规则沿用原流程，更新前建议导出本机备份。
