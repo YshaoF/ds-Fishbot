@@ -1,0 +1,33 @@
+// !$*UTF8*$!
+{ archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
+9333321744169AE38605D7E7 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FishbotApp.swift"; sourceTree = "<group>"; };
+2233490356A9B46D2DB0A789 = { isa = PBXBuildFile; fileRef = 9333321744169AE38605D7E7; };
+B75E6C246C9D66540C6B1D23 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NativeBridge.swift"; sourceTree = "<group>"; };
+363F18D2AE28A5FD2EDAB68B = { isa = PBXBuildFile; fileRef = B75E6C246C9D66540C6B1D23; };
+26F6C99599A539F975D31789 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecretStore.swift"; sourceTree = "<group>"; };
+8F7471DAC8F3C20AE43A4BA4 = { isa = PBXBuildFile; fileRef = 26F6C99599A539F975D31789; };
+2F987A0157ACB084F6E9CA09 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BundledAssets.swift"; sourceTree = "<group>"; };
+9AA5B0A4B7A7871BB4604C1F = { isa = PBXBuildFile; fileRef = 2F987A0157ACB084F6E9CA09; };
+E306C26B659E0DDF33CF7020 = { isa = PBXFileReference; lastKnownFileType = "folder"; path = "public"; sourceTree = "<group>"; };
+C2DE0865F37BBACBFC498953 = { isa = PBXBuildFile; fileRef = E306C26B659E0DDF33CF7020; };
+05529D7BAF9BE1F1AD75AA78 = { isa = PBXFileReference; lastKnownFileType = "folder.assetcatalog"; path = "Assets.xcassets"; sourceTree = "<group>"; };
+D0ADC22F3C046CC76298F620 = { isa = PBXBuildFile; fileRef = 05529D7BAF9BE1F1AD75AA78; };
+CD774F8C46B4685BA5E70E5A = { isa = PBXFileReference; lastKnownFileType = "text.xml"; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
+FD57E9B16885BEBF76EEE08F = { isa = PBXBuildFile; fileRef = CD774F8C46B4685BA5E70E5A; };
+8873151C067A966D8A2B0623 = { isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+A8792157CB4F27FB949C035F = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fishbot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+878A52FC5FF6A57D50B7B870 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (2233490356A9B46D2DB0A789,363F18D2AE28A5FD2EDAB68B,8F7471DAC8F3C20AE43A4BA4,9AA5B0A4B7A7871BB4604C1F); runOnlyForDeploymentPostprocessing = 0; };
+41D311A605520FC7B8B9A980 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (C2DE0865F37BBACBFC498953,D0ADC22F3C046CC76298F620,FD57E9B16885BEBF76EEE08F); runOnlyForDeploymentPostprocessing = 0; };
+E2AA269EB967A8853A258BFA = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+085ED06E573690BA3A56BC1E = { isa = PBXGroup; children = (9333321744169AE38605D7E7,B75E6C246C9D66540C6B1D23,26F6C99599A539F975D31789,2F987A0157ACB084F6E9CA09,E306C26B659E0DDF33CF7020,05529D7BAF9BE1F1AD75AA78,CD774F8C46B4685BA5E70E5A,8873151C067A966D8A2B0623); path = Fishbot; sourceTree = "<group>"; };
+6F7199ED7B63CDA338A0FB82 = { isa = PBXGroup; children = (A8792157CB4F27FB949C035F); name = Products; sourceTree = "<group>"; };
+CC5D242D023A9271190EA7C6 = { isa = PBXGroup; children = (085ED06E573690BA3A56BC1E,6F7199ED7B63CDA338A0FB82); sourceTree = "<group>"; };
+34A04005BCAF206EEC990BD9 = { isa = PBXNativeTarget; buildConfigurationList = A3A9F964E1A0C2EF1764361A; buildPhases = (878A52FC5FF6A57D50B7B870,E2AA269EB967A8853A258BFA,41D311A605520FC7B8B9A980); buildRules = (); dependencies = (); name = Fishbot; productName = Fishbot; productReference = A8792157CB4F27FB949C035F; productType = "com.apple.product-type.application"; };
+184B519F8E1416CCE38CFFD7 = { isa = XCBuildConfiguration; buildSettings = {"SDKROOT" = "iphoneos"; "IPHONEOS_DEPLOYMENT_TARGET" = "16.4"; "SWIFT_VERSION" = "5.0"; "CLANG_ENABLE_MODULES" = "YES"; "CLANG_ENABLE_OBJC_ARC" = "YES"; "ENABLE_USER_SCRIPT_SANDBOXING" = "YES"; "SWIFT_OPTIMIZATION_LEVEL" = "-Onone"; "SWIFT_COMPILATION_MODE" = "singlefile"; "DEBUG_INFORMATION_FORMAT" = "dwarf";}; name = Debug; };
+A824290273A346217D9BE6F4 = { isa = XCBuildConfiguration; buildSettings = {"SDKROOT" = "iphoneos"; "IPHONEOS_DEPLOYMENT_TARGET" = "16.4"; "SWIFT_VERSION" = "5.0"; "CLANG_ENABLE_MODULES" = "YES"; "CLANG_ENABLE_OBJC_ARC" = "YES"; "ENABLE_USER_SCRIPT_SANDBOXING" = "YES"; "SWIFT_OPTIMIZATION_LEVEL" = "-O"; "SWIFT_COMPILATION_MODE" = "wholemodule"; "DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";}; name = Release; };
+98807F150771758A9D9A23BA = { isa = XCConfigurationList; buildConfigurations = (184B519F8E1416CCE38CFFD7,A824290273A346217D9BE6F4); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+D33AAFE35EDBC07AD2F20989 = { isa = XCBuildConfiguration; buildSettings = {"PRODUCT_BUNDLE_IDENTIFIER" = "com.fishbot.assistant.ios"; "PRODUCT_NAME" = "$(TARGET_NAME)"; "INFOPLIST_FILE" = "Fishbot/Info.plist"; "ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon"; "TARGETED_DEVICE_FAMILY" = "1,2"; "MARKETING_VERSION" = "0.1.0"; "CURRENT_PROJECT_VERSION" = "1"; "CODE_SIGN_STYLE" = "Automatic"; "SWIFT_EMIT_LOC_STRINGS" = "NO"; "GENERATE_INFOPLIST_FILE" = "NO"; "SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator"; "SUPPORTS_MACCATALYST" = "NO";}; name = Debug; };
+A4F6FDF00412DAC7A3965672 = { isa = XCBuildConfiguration; buildSettings = {"PRODUCT_BUNDLE_IDENTIFIER" = "com.fishbot.assistant.ios"; "PRODUCT_NAME" = "$(TARGET_NAME)"; "INFOPLIST_FILE" = "Fishbot/Info.plist"; "ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon"; "TARGETED_DEVICE_FAMILY" = "1,2"; "MARKETING_VERSION" = "0.1.0"; "CURRENT_PROJECT_VERSION" = "1"; "CODE_SIGN_STYLE" = "Automatic"; "SWIFT_EMIT_LOC_STRINGS" = "NO"; "GENERATE_INFOPLIST_FILE" = "NO"; "SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator"; "SUPPORTS_MACCATALYST" = "NO";}; name = Release; };
+A3A9F964E1A0C2EF1764361A = { isa = XCConfigurationList; buildConfigurations = (D33AAFE35EDBC07AD2F20989,A4F6FDF00412DAC7A3965672); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+244210E48437B6556980A702 = { isa = PBXProject; attributes = { BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1600; TargetAttributes = { 34A04005BCAF206EEC990BD9 = { CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = 98807F150771758A9D9A23BA; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en,Base,"zh-Hans"); mainGroup = CC5D242D023A9271190EA7C6; productRefGroup = 6F7199ED7B63CDA338A0FB82; projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9); };
+}; rootObject = 244210E48437B6556980A702; }

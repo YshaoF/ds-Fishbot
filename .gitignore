@@ -1,0 +1,13 @@
+.tools/
+qa/
+*.tar.gz
+*.zip
+node_modules/
+.site-workflow/
+test-results/
+.env*
+
+build/
+ios/Fishbot/public/
+*.xcuserstate
+xcuserdata/
